@@ -1,0 +1,100 @@
+#include<iostream>
+using namespace std;
+const int size = 5;
+class call {
+private:
+	string name;
+	int callID;
+public:
+	call() : name(""), callID(0) {}
+	call(const string& n, int id) {
+		name = n;
+		callID = id;
+
+	}
+	void display() const {
+		cout << "Call from: " << name << ", Call ID: " << callID << endl;
+	}
+};
+class callQueue {
+private:
+	call customers[size];
+	int front;
+	int rear;
+public:
+
+	callQueue() {
+		front = 0;
+		rear = -1;
+	}
+
+	void enqueue(const string& name, int callID) {
+
+		if (isFull()) {
+			cout << "Queue is full" << endl;
+		}
+		else {
+			rear++;
+			customers[rear] = call(name, callID);
+		}
+	}
+	bool isEmpty() const {
+		if (rear == -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	bool isFull() const {
+		if (rear == size - 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	void dequeue() {
+		if (isEmpty()) {
+			cout << "Queue is empty." << endl;
+			return;
+		}
+		cout << "Removing call: ";
+		customers[front].display();
+		cout << endl;
+		for (int i = 1; i <= rear; i++) {
+			customers[i - 1] = customers[i];
+		}
+		rear--;
+	}
+	void displayQueue() const {
+		if (isEmpty()) {
+			cout << "Queue is empty." << endl;
+			return;
+		}
+		cout << "Current Queue:" << endl;
+		for (int i = front; i <= rear; ++i) {
+			customers[i].display();
+		}
+	}
+
+};
+int main() {
+	callQueue q;
+	q.enqueue("Mubashra", 101);
+	q.enqueue("Beenish", 102);
+	q.enqueue("Tayyaba", 103);
+
+	q.displayQueue();
+	q.dequeue();
+
+	q.displayQueue();
+	q.dequeue();
+
+	q.displayQueue();
+	q.dequeue();
+	system("pause");
+return 0;
+}
