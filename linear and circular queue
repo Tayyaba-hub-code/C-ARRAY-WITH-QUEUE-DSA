@@ -1,0 +1,146 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int MAX_SIZE = 10;
+
+
+class QueueA {
+private:
+	string names[MAX_SIZE];
+	int severity[MAX_SIZE];
+	int front, rear;
+
+public:
+	QueueA() {
+		front = 0;
+		rear = -1;
+	}
+
+	bool isFull() {
+		return rear == MAX_SIZE - 1;
+	}
+
+	bool isEmpty() {
+		return front > rear;
+	}
+
+	void addPatient(string name, int level) {
+		if (isFull()) {
+			cout << "Queue A is full! Cannot add patient.\n";
+			return;
+		}
+		rear++;
+		names[rear] = name;
+		severity[rear] = level;
+		cout << "Patient " << name << " with severity " << level << " added to Queue A.\n";
+	}
+
+	void treatPatient() {
+		if (isEmpty()) {
+			cout << "Queue A is empty! No patient to treat.\n";
+			return;
+		}
+		cout << "Treating patient " << names[front] << " from Queue A.\n";
+		front++;
+	}
+
+	void display() {
+		if (isEmpty()) {
+			cout << "Queue A is empty.\n";
+			return;
+		}
+		cout << "Queue A Patients:\n";
+		for (int i = front; i <= rear; i++) {
+			cout << names[i] << " (Severity: " << severity[i] << ")\n";
+		}
+	}
+};
+
+
+class QueueB {
+private:
+	string names[MAX_SIZE];
+	int severity[MAX_SIZE];
+	int front, rear, count;
+
+public:
+	QueueB() {
+		front = 0;
+		rear = -1;
+		count = 0;
+	}
+
+	bool isFull() {
+		return count == MAX_SIZE;
+	}
+
+	bool isEmpty() {
+		return count == 0;
+	}
+
+	void addPatient(string name, int level) {
+		if (isFull()) {
+			cout << "Queue B is full! Cannot add patient.\n";
+			return;
+		}
+		rear = (rear + 1) % MAX_SIZE;
+		names[rear] = name;
+		severity[rear] = level;
+		count++;
+		cout << "Patient " << name << " with severity " << level << " added to Queue B.\n";
+	}
+
+	void treatPatient() {
+		if (isEmpty()) {
+			cout << "Queue B is empty! No patient to treat.\n";
+			return;
+		}
+		cout << "Treating patient " << names[front] << " from Queue B.\n";
+		front = (front + 1) % MAX_SIZE;
+		count--;
+	}
+
+	void display() {
+		if (isEmpty()) {
+			cout << "Queue B is empty.\n";
+			return;
+		}
+		cout << "Queue B Patients:\n";
+		int i = front;
+		for (int c = 0; c < count; c++) {
+			cout << names[i] << " (Severity: " << severity[i] << ")\n";
+			i = (i + 1) % MAX_SIZE;
+		}
+	}
+};
+
+
+int main() {
+	QueueA qa;
+	QueueB qb;
+
+	// Simulate adding patients
+	qa.addPatient("Ali", 3);
+	qa.addPatient("Zara", 4);
+	qa.addPatient("Usman", 2);
+
+	qb.addPatient("Amna", 4);
+	qb.addPatient("Bilal", 5);
+	qb.addPatient("Danish", 1);
+
+	cout << "\n--- Before Treatment ---\n";
+	qa.display();
+	qb.display();
+
+	// Treating one patient from each queue
+	cout << "\n--- Treating One Patient Each ---\n";
+	qa.treatPatient();
+	qb.treatPatient();
+
+	cout << "\n--- After Treatment ---\n";
+	qa.display();
+	qb.display();
+
+	return 0;
+}
