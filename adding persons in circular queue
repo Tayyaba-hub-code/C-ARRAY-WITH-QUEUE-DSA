@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int SIZE = 5;
+
+class PersonQueue {
+private:
+	string queue[SIZE];
+	int front, rear, count;
+
+public:
+	PersonQueue() {
+		front = 0;
+		rear = -1;
+		count = 0;
+	}
+
+	bool isFull() {
+		return count == SIZE;
+	}
+
+	bool isEmpty() {
+		return count == 0;
+	}
+
+	void enqueue(string name) {
+		if (isFull()) {
+			cout << "Queue is full. " << name << " cannot enter due to COVID-19 restrictions." << endl;
+			return;
+		}
+		rear = (rear + 1) % SIZE;
+		queue[rear] = name;
+		count++;
+		cout << name << " has entered the queue." << endl;
+	}
+
+	void dequeue() {
+		if (isEmpty()) {
+			cout << "Queue is empty. No person to remove." << endl;
+			return;
+		}
+		cout << queue[front] << " has booked the ticket and left the queue." << endl;
+		front = (front + 1) % SIZE;
+		count--;
+	}
+
+	void display() {
+		if (isEmpty()) {
+			cout << "Queue is currently empty." << endl;
+			return;
+		}
+		cout << "Current people in the queue: ";
+		int index = front;
+		for (int i = 0; i < count; i++) {
+			cout << queue[index] << " ";
+			index = (index + 1) % SIZE;
+		}
+		cout << endl;
+	}
+};
+
+int main() {
+	PersonQueue pq;
+
+
+	pq.enqueue("Ali");
+	pq.enqueue("Sara");
+	pq.enqueue("Zain");
+	pq.enqueue("Ayesha");
+	pq.enqueue("Omar");
+	pq.enqueue("Hina");
+
+	pq.display();
+
+
+	pq.dequeue();
+	pq.enqueue("Hina");
+
+	pq.display();
+	system("pause");
+	return 0;
+}
