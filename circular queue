@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 5;
+
+class PrintQueue {
+private:
+	int jobID[SIZE];
+	int pages[SIZE];
+	int front, rear, count;
+
+public:
+	PrintQueue() {
+		front = 0;
+		rear = -1;
+		count = 0;
+	}
+
+	bool isEmpty() {
+		return count == 0;
+	}
+
+	bool isFull() {
+		return count == SIZE;
+	}
+
+	void addJob(int id, int pg) {
+		if (isFull()) {
+			cout << "Queue is full. Cannot add new job." << endl;
+			return;
+		}
+		rear = (rear + 1) % SIZE;
+		jobID[rear] = id;
+		pages[rear] = pg;
+		count++;
+		cout << "Added Job ID: " << id << ", Pages: " << pg << endl;
+	}
+
+	void processJob() {
+		if (isEmpty()) {
+			cout << "Queue is empty. No job to process." << endl;
+			return;
+		}
+		cout << "Processing Job ID: " << jobID[front] << ", Pages: " << pages[front] << endl;
+		front = (front + 1) % SIZE;
+		count--;
+	}
+
+	void displayJobs() {
+		if (isEmpty()) {
+			cout << "Queue is empty. No jobs to display." << endl;
+			return;
+		}
+		cout << "Current jobs in queue:" << endl;
+		int index = front;
+		for (int i = 0; i < count; i++) {
+			cout << "Job ID: " << jobID[index] << ", Pages: " << pages[index] << endl;
+			index = (index + 1) % SIZE;
+		}
+	}
+};
+
+int main() {
+	PrintQueue pq;
+
+	pq.addJob(101, 5);
+	pq.addJob(102, 3);
+	pq.addJob(103, 7);
+	pq.displayJobs();
+
+	pq.processJob();
+	pq.displayJobs();
+
+	pq.addJob(104, 2);
+	pq.addJob(105, 6);
+	pq.addJob(106, 4);
+
+	pq.displayJobs();
+	system("pause");
+	return 0;
+}
